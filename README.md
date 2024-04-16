@@ -1,4 +1,6 @@
-# FabricNetwork-2.x
+# Halal Blockchain Network
+
+## Original source code by Adhav Pavan
 
 Youtube Channel: https://www.youtube.com/watch?v=SJTdJt6N6Ow&list=PLSBNVhWU6KjW4qo1RlmR7cvvV8XIILub6
 
@@ -11,6 +13,11 @@ Three Orgs(Peer Orgs)
     - Each Org have separate Certificate Authority
     - Each Peer has Current State database as couch db
 
+Three peer
+
+    - Pengusaha
+    - Lph
+    - Bpjh
 
 One Orderer Org
 
