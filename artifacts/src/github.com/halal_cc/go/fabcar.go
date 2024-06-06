@@ -18,14 +18,15 @@ type SmartContract struct {
 var logger = flogging.MustGetLogger("fabcar_cc")
 
 type SertifikatHalal struct {
-	ID         string `json:"id"`
-	Perusahaan string `json:"perusahaan"`
-	Nama       string `json:"nama"`
-	Nib        string `json:"nib"`
-	Produk     string `json:"produk"`
-	Alamat     string `json:"alamat"`
-	Status     string `json:"status"`
-	AddedAt    uint64 `json:"addedAt"`
+	ID         string                 `json:"id"`
+	Perusahaan string                 `json:"perusahaan"`
+	Nama       string                 `json:"nama"`
+	Nib        string                 `json:"nib"`
+	Produk     string                 `json:"produk"`
+	Alamat     string                 `json:"alamat"`
+	Status     string                 `json:"status"`
+	AddedAt    uint64                 `json:"addedAt"`
+	Data       map[string]interface{} `json:"data"`
 }
 
 func (s *SmartContract) CreateSertifikatHalal(ctx contractapi.TransactionContextInterface, halalData string) (string, error) {
@@ -37,12 +38,12 @@ func (s *SmartContract) CreateSertifikatHalal(ctx contractapi.TransactionContext
 	var halal SertifikatHalal
 	err := json.Unmarshal([]byte(halalData), &halal)
 	if err != nil {
-		return "", fmt.Errorf("Failed while unmarshling halal. %s", err.Error())
+		return "", fmt.Errorf("Failed while unmarshaling halal. %s", err.Error())
 	}
 
 	halalAsBytes, err := json.Marshal(halal)
 	if err != nil {
-		return "", fmt.Errorf("failed while marshling halal. %s", err.Error())
+		return "", fmt.Errorf("Failed while marshaling halal. %s", err.Error())
 	}
 
 	ctx.GetStub().SetEvent("CreateAsset", halalAsBytes)
@@ -146,7 +147,6 @@ func (s *SmartContract) UpdateSertifikatHalalStatus(ctx contractapi.TransactionC
 	}
 
 	halalAsBytes, err := ctx.GetStub().GetState(halalID)
-
 	if err != nil {
 		return "", fmt.Errorf("Failed to get halal data. %s", err.Error())
 	}
@@ -155,20 +155,17 @@ func (s *SmartContract) UpdateSertifikatHalalStatus(ctx contractapi.TransactionC
 		return "", fmt.Errorf("%s does not exist", halalID)
 	}
 
-	halal := new(SertifikatHalal)
-	_ = json.Unmarshal(halalAsBytes, halal)
+	var halal SertifikatHalal
+	_ = json.Unmarshal(halalAsBytes, &halal)
 
 	halal.Status = newStatus
 
 	halalAsBytes, err = json.Marshal(halal)
 	if err != nil {
-		return "", fmt.Errorf("Failed while marshling halal. %s", err.Error())
+		return "", fmt.Errorf("Failed while marshaling halal. %s", err.Error())
 	}
 
-	//  txId := ctx.GetStub().GetTxID()
-
 	return ctx.GetStub().GetTxID(), ctx.GetStub().PutState(halal.ID, halalAsBytes)
-
 }
 
 func (s *SmartContract) GetHistoryForAsset(ctx contractapi.TransactionContextInterface, halalID string) (string, error) {
@@ -221,15 +218,13 @@ func (s *SmartContract) GetHistoryForAsset(ctx contractapi.TransactionContextInt
 	return string(buffer.Bytes()), nil
 }
 
-// GetCarById
+// GetHalalById
 func (s *SmartContract) GetSertifikatHalalById(ctx contractapi.TransactionContextInterface, halalID string) (*SertifikatHalal, error) {
 	if len(halalID) == 0 {
 		return nil, fmt.Errorf("Please provide correct contract Id")
-		// return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
 	halalAsBytes, err := ctx.GetStub().GetState(halalID)
-
 	if err != nil {
 		return nil, fmt.Errorf("Failed to read from world state. %s", err.Error())
 	}
@@ -238,11 +233,10 @@ func (s *SmartContract) GetSertifikatHalalById(ctx contractapi.TransactionContex
 		return nil, fmt.Errorf("%s does not exist", halalID)
 	}
 
-	halal := new(SertifikatHalal)
-	_ = json.Unmarshal(halalAsBytes, halal)
+	var halal SertifikatHalal
+	_ = json.Unmarshal(halalAsBytes, &halal)
 
-	return halal, nil
-
+	return &halal, nil
 }
 
 func (s *SmartContract) DeleteSertifikatHalalById(ctx contractapi.TransactionContextInterface, halalID string) (string, error) {
