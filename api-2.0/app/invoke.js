@@ -68,7 +68,7 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 break;
             case "UpdateSertifikatHalalStatus":
                 console.log("=============")
-                result = await contract.submitTransaction('SmartContract:'+fcn, args[0], args[1]);
+                result = await contract.submitTransaction('SmartContract:'+fcn, args[0], args[1], args[2], args[3]);
                 result = {txid: result.toString()}
                 break;
             case "CreateDocument":

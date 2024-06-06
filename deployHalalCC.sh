@@ -232,7 +232,7 @@ chaincodeInvoke() {
         -C $CHANNEL_NAME -n ${CC_NAME}  \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_PENGUSAHA_CA \
         --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_BPJH_CA   \
-        -c '{"function": "CreateSertifikatHalal","Args":["{\"id\":\"20\",\"perusahaan\":\"icetea\",\"addedAt\":1600138309939,\"nama\":\"Alice Corp\",\"nib\":\"097283834\",\"produk\":\"Es Teh\",\"alamat\":\"Samping Bara\",\"data\":{\"harga-pendaftaran\":\"10000\",\"pengecekan-oleh-majelis\":\"true\"},\"status\":\"Pengajuan Sertifikat\"}"]}'
+        -c '{"function": "CreateSertifikatHalal","Args":["{\"id\":\"20\",\"perusahaan\":\"icetea\",\"nama\":\"Alice Corp\",\"nib\":\"097283834\",\"produk\":\"Es Teh\",\"alamat\":\"Samping Bara\",\"data\":{\"harga-pendaftaran\":\"10000\",\"pengecekan-oleh-majelis\":\"true\"},\"status\":\"Pengajuan Sertifikat\"}"]}'
 
 }
 
