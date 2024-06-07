@@ -169,10 +169,24 @@ func (s *SmartContract) GetSertifikatHalalById(ctx contractapi.TransactionContex
 
 func (s *SmartContract) DeleteSertifikatHalalById(ctx contractapi.TransactionContextInterface, halalID string) (string, error) {
 	if len(halalID) == 0 {
-		return "", fmt.Errorf("Please provide correct contract Id")
+		return "", fmt.Errorf("Please provide a correct halal ID")
 	}
 
-	return ctx.GetStub().GetTxID(), ctx.GetStub().DelState(halalID)
+	halalAsBytes, err := ctx.GetStub().GetState(halalID)
+	if err != nil {
+		return "", fmt.Errorf("Failed to get halal data. %s", err.Error())
+	}
+
+	if halalAsBytes == nil {
+		return "", fmt.Errorf("%s does not exist", halalID)
+	}
+
+	err = ctx.GetStub().DelState(halalID)
+	if err != nil {
+		return "", fmt.Errorf("Failed to delete halal data. %s", err.Error())
+	}
+
+	return ctx.GetStub().GetTxID(), nil
 }
 
 func (s *SmartContract) GetContractsForQuery(ctx contractapi.TransactionContextInterface, queryString string) ([]SertifikatHalal, error) {

@@ -76,6 +76,10 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
                 console.log(result.toString())
                 result = {txid: result.toString()}
                 break;
+            case "DeleteSertifikatHalalById":
+                result = await contract.submitTransaction(fcn, args[0]);
+                result = { txid: result.toString() }
+                break;
             case "Bid":
                 // result = await contract.submitTransaction(fcn, args[0], args[1]);
                 // console.log(result.toString())
