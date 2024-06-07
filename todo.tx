@@ -1,0 +1,15 @@
+"args": [
+    "{\"id\":\"12\",\"perusahaan\":\"icetea\",\"addedAt\":1600138309939,\"nama\":\"Alice Corp\",\"nib\":\"097283834\",\"produk\":\"Es Teh\",\"alamat\":\"Samping Bara\",\"data\":{\"harga-pendaftaran\":\"10000\",\"pengecekan-oleh-majelis\":\"true\"},\"status\":\"Pengajuan Sertifikat\"}"
+  ]
+
+
+
+1. halal data key value
+2. dockerizing api
+3. deletedata
+4. dotnet request
+5. coba dotnet request
+
+
+
+\"data\":{\"key\":\"value\"}

@@ -1,0 +1,7 @@
+cd artifacts
+docker compose down 
+docker rmi $(docker images --filter "dangling=false" --format "{{.Repository}}:{{.Tag}}" | grep '^dev.' | awk '{print $1}')
+docker compose up -d --build
+cd ..
+./createChannel.sh
+./deployHalalCC.sh
