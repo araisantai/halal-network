@@ -54,7 +54,7 @@ func (s *SmartContract) CreateSertifikatHalal(ctx contractapi.TransactionContext
 	return ctx.GetStub().GetTxID(), ctx.GetStub().PutState(halal.ID, halalAsBytes)
 }
 
-func (s *SmartContract) UpdateSertifikatHalalStatus(ctx contractapi.TransactionContextInterface, halalID string, newStatus string, typeUser string, nameValue string) (string, error) {
+func (s *SmartContract) UpdateSertifikatHalalStatus(ctx contractapi.TransactionContextInterface, halalID string, newStatus string, typeUser string, nameValue string, dataJson string) (string, error) {
 
 	if len(halalID) == 0 {
 		return "", fmt.Errorf("Please pass the correct halal id")
@@ -73,12 +73,19 @@ func (s *SmartContract) UpdateSertifikatHalalStatus(ctx contractapi.TransactionC
 	_ = json.Unmarshal(halalAsBytes, &halal)
 
 	halal.Status = newStatus
-	if typeUser == "bpjhname" {
+	if typeUser == "BPJH" {
 		halal.Bpjhname = nameValue
-	} else if typeUser == "lphname" {
+	} else if typeUser == "LPH" {
 		halal.Lphname = nameValue
 	} else {
 		return "", fmt.Errorf("Invalid nameType. Must be 'bpjhname' or 'lphname'")
+	}
+
+	var newData map[string]interface{}
+	err = json.Unmarshal([]byte(dataJson), &newData)
+	for key, value := range newData {
+		// Ensure type compatibility, if necessary, handle type assertions here
+		halal.Data[key] = value
 	}
 
 	halalAsBytes, err = json.Marshal(halal)
