@@ -1,9 +1,19 @@
-version: '3'
+version: '2'
+
+networks:
+  test:
+
 services:
   api:
+    container_name: api-halal-network
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
     ports:
       - "4000:4000"
-    restart: always
+    environment:
+      - NODE_ENV=production
+    networks:
+      - test
